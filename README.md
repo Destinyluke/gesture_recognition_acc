@@ -39,9 +39,9 @@
 
 系统的实物图以及最终的图像如下图所示：
 
-<img src="README.assets/fig2.3.jpg" alt="fig2.3" style="zoom: 25%;" />
+<img src="README.assets/pic3.jpg" alt="pic3" style="zoom: 25%;" />
 
-<img src="README.assets/fig4.1b.jpg" alt="fig4.1b" style="zoom: 25%;" />
+<img src="README.assets/pic4.jpg" alt="pic4" style="zoom: 25%;" />
 
 我们设计了串口程序，通过串口识别最终的结果。当FPGA通过串口传输了100次数据后，就会自动停下来。我们在同一正常背景、充足光照条件下，分别在摄像头前摆放手势1-4，每个手势都会被识别100次。通过这100个数据，统计每种手势的平均准确率。
 
