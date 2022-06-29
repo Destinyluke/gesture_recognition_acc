@@ -6,7 +6,7 @@
 
 本系统可以分为三个部分：基础硬件部分、图像预处理部分、手势识别部分。
 
-<img src="README.assets/图片1.png" alt="图片1" style="zoom: 33%;" />
+<img src="README.assets/pic1.png" alt="pic1" style="zoom: 33%;" />
 
 ### 基础硬件部分
 
@@ -49,7 +49,7 @@
 
 最终得到的测试结果如下表所示(手的距离为20-30cm)：
 
-<img src="README.assets/image-20220629164406096.png" alt="image-20220629164406096" style="zoom: 67%;" />
+<img src="README.assets/pic2.png" alt="pic2" style="zoom: 67%;" />
 
 每次识别的时间为672ms。
 
