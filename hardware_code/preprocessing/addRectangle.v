@@ -19,7 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
+//根据centroid生成的left,right,top,bottom,生成图像的绿色矩形框
 module addRectangle(
     input wire[9:0] left,
     input wire[9:0] right,
@@ -38,12 +38,6 @@ module addRectangle(
     wire bottom_en;
     wire left_en;
     wire right_en;
-    // wire data_en;
-
-    // assign data_en = ((pixel_x > left) && 
-    //                 (pixel_x < right) &&
-    //                 (pixel_y > top) &&
-    //                 (pixel_y < bottom))? 1'b1: 1'b0;
 
     assign top_en = ((pixel_x > left-RECT_WIDTH) && 
                     (pixel_x < right+RECT_WIDTH) &&
@@ -65,28 +59,6 @@ module addRectangle(
                     (pixel_y > top-RECT_WIDTH) &&
                     (pixel_y < bottom+RECT_WIDTH))? 1'b1: 1'b0;
 
-    // always @(*) begin
-    //     // if(data_en) begin
-    //         if(top_en || bottom_en || left_en || right_en) begin
-    //             data_out = 12'b0000_1111_0000;
-    //         end
-    //         else begin
-    //             data_out = background;
-    //         end
-    //     // end
-    //     // else begin
-    //     //     data_out = 12'b0000_0000_0000;
-    //     // end
-    // end
-
-    // always @(*) begin
-    //     if(data_en) begin
-    //         data_out = background;
-    //     end
-    //     else begin
-    //         data_out = 12'b0000_0000_0000;
-    //     end
-    // end
     always @(*) begin
         if(top_en || bottom_en || left_en || right_en) begin
             data_out = 12'b0000_1111_0000;
@@ -95,8 +67,6 @@ module addRectangle(
             data_out = background;
         end
     end
-
-    // assign data_out = ((top_en || bottom_en || left_en || right_en) && paint)? 12'b0000_1111_0000: background;
     
 
 

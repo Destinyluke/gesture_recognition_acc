@@ -122,8 +122,7 @@ module top(
     wire Int2;  //按键2
     wire Int3;  //按键3
 
-    (*mark_debug="true"*)wire[31:0] ms_cnt_final;    //计时器结果，显示处理一帧的时间
-
+    wire[31:0] ms_cnt_final;    //计时器结果，显示处理一帧的时间
 
     assign rst_n = sys_rst_n && locked;
     assign cam_rst_n = 1'b1;
@@ -198,6 +197,7 @@ module top(
         .cmos_pos_vsync  (cmos_pos_vsync)   //场同步信号上升沿
     );
 
+    //BRAM ip核
     blk_mem_gen_0 u_blk_mem_gen_0(
         .addra          (ram_addr_i),
         .clka           (cam_pclk),
@@ -209,6 +209,7 @@ module top(
         .doutb          (ram_data_o)
     );
 
+    //vga驱动模块
     vga_driver u_vga_driver(
         .vga_clk        (clk_25m),
         .rst_n          (rst_n),
@@ -225,6 +226,7 @@ module top(
         .hsync_r_pos    (hsync_r_pos)
     );
 
+    //帧控制模块,生成读取BRAM的地址
     frame_ctrl u_frame_ctrl(
         .vga_clk        (clk_25m),
         .rst_n          (rst_n),
@@ -235,6 +237,7 @@ module top(
         .read_addr      (ram_addr_o)
     );
 
+    //中值滤波模块
     cov_median u_cov_median(
         .vga_clk        (clk_25m),
         .rst_n          (rst_n),
@@ -245,6 +248,7 @@ module top(
         .median_out     (median_data)
     );
 
+    //按键控制模块
     pb_debounce u_pb_debounce1(
         .clk            (clk_25m),
         .resetn         (rst_n),
@@ -269,6 +273,7 @@ module top(
         .pb_tick        (Int3)
     );
 
+    //ycbcr阈值化模块
     rgb2ycbcr u_rgb2ycbcr(
         .clk            (clk_25m),
         .rst_n          (rst_n),         
@@ -280,14 +285,7 @@ module top(
         .choice_led     (choice_led)
     );
 
-    // rgb2hsv u_rgb2hsv(
-    //     .vga_clk(clk_25m),
-    //     .rst_n(rst_n),
-    //     .imgPixel_in(median_data),
-        
-    //     .imgPixel_out(erzhihua_data)
-    // );
-
+    //腐蚀模块
     cov_erode u_cov_erode(
         .vga_clk        (clk_25m),
         .rst_n          (rst_n),
@@ -298,6 +296,7 @@ module top(
         .erode_out      (erode_data)
     );
 
+    //膨胀模块
     cov_dilate u1_cov_dilate(
         .vga_clk        (clk_25m),
         .rst_n          (rst_n),
@@ -318,6 +317,7 @@ module top(
         .dilate_out     (dilate_data1)
     );
 
+    //质心检测模块
     centroid u_centroid(
         .vga_clk        (clk_25m),
         .rst_n          (rst_n),
@@ -331,6 +331,7 @@ module top(
         .bottom         (bottom)
     );
 
+    //根据centroid生成的left,right,top,bottom,生成图像的绿色矩形框
     addRectangle u_addRectangle(
         .left           (left),
         .right          (right),
@@ -343,6 +344,7 @@ module top(
         .data_out       (rectangle_data)
     );
 
+    //手势识别模块
     find_fingers u_find_fingers(  
         .vga_clk        (clk_25m),
         .rst_n          (rst_n),
@@ -361,6 +363,7 @@ module top(
         .begin_count    (begin_count)
     );
 
+    //统计多帧模块
     finger_count u_finger_count(
         .clk            (clk_25m),
         .rst_n          (rst_n),
@@ -371,11 +374,13 @@ module top(
         .uart_en        (uart_en)
     );
 
+    //led显示模块
     led u_led(
         .led_in         (led_in),
         .led            (led_out)
     );
 
+    //统计准确率模块
     correct_count u_correct_count(
         .clk_25m        (clk_25m),
         .rst_n          (rst_n),
@@ -386,6 +391,7 @@ module top(
         .tx             (tx)
     );
 
+    //识别时间统计模块
     timer u_timer(
         .clk_50m        (clk_50m),
         .rst_n          (rst_n),

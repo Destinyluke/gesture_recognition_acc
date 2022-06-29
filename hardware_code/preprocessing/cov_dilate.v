@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 2021/12/02 10:23:05
+// Create Date: 2021/12/02 10:23:13
 // Design Name: 
-// Module Name: cov_erode
+// Module Name: cov_dilate
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -19,8 +19,8 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
-module cov_erode(
+//膨胀模块
+module cov_dilate(
     input wire vga_clk,
     input wire rst_n,
 
@@ -28,7 +28,7 @@ module cov_erode(
     input wire[9:0] pixel_y,
     input wire[23:0] erzhihua_data,  
 
-    output wire[11:0] erode_out
+    output wire[11:0] dilate_out
     );
 
     wire[7:0] erzhihua;
@@ -85,7 +85,7 @@ module cov_erode(
                 p1 <= p2;
                 p0 <= p1;
                 if(pixel_x>=2 && pixel_y>=3) begin
-                    conv_out <= (p0 && p1 && p2 && line_buf1[pixel_x-2] && line_buf1[pixel_x-1] && line_buf1[pixel_x] && line_buf0[pixel_x-2] && line_buf0[pixel_x-1] && line_buf0[pixel_x]);
+                    conv_out <= (p0 || p1 || p2 || line_buf1[pixel_x-2] || line_buf1[pixel_x-1] || line_buf1[pixel_x] || line_buf0[pixel_x-2] || line_buf0[pixel_x-1] || line_buf0[pixel_x]);
                 end
             end
             1'b1: begin
@@ -95,7 +95,7 @@ module cov_erode(
                 p1 <= p2;
                 p0 <= p1;
                 if(pixel_x>=2 && pixel_y>=3) begin
-                    conv_out <= (p0 && p1 && p2 && line_buf1[pixel_x-2] && line_buf1[pixel_x-1] && line_buf1[pixel_x] && line_buf0[pixel_x-2] && line_buf0[pixel_x-1] && line_buf0[pixel_x]);
+                    conv_out <= (p0 || p1 || p2 || line_buf1[pixel_x-2] || line_buf1[pixel_x-1] || line_buf1[pixel_x] || line_buf0[pixel_x-2] || line_buf0[pixel_x-1] || line_buf0[pixel_x]);
                 end
             end
             default: begin
@@ -106,5 +106,5 @@ module cov_erode(
         endcase
     end
 
-    assign erode_out = conv_out? 12'hfff: 12'h000;
+    assign dilate_out = conv_out? 12'hfff: 12'h000;
 endmodule

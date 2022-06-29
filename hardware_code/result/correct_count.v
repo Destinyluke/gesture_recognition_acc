@@ -19,13 +19,13 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
+//统计准确率模块
 module correct_count(
     input wire          clk_25m,
     input wire          rst_n,
     input wire          uart_knob,
     input wire[3:0]     final_number,
-    (*mark_debug="true"*)input wire          uart_en,
+    input wire          uart_en,
 
     output wire         tx
     );
@@ -36,12 +36,12 @@ module correct_count(
     wire tx_full;   //发送器fifo满信号
     wire tx_empty;  //发送器fifo空信号
     wire[7:0] tx_data;  //FIFO与tx之间的数据
-    (*mark_debug="true"*)wire send_done;     //uart传输完成指示信号
-    (*mark_debug="true"*)wire uart_wr;   //uart写使能
+    wire send_done;     //uart传输完成指示信号
+    wire uart_wr;   //uart写使能
 
     assign uart_wdata = {4'b0000,final_number};
 
-    (*mark_debug="true"*)reg[7:0] count;     //uart传输个数计数器
+    reg[7:0] count;     //uart传输个数计数器
 
     always @(posedge clk_25m or negedge rst_n) begin
         if(!rst_n) begin
@@ -58,7 +58,6 @@ module correct_count(
     assign send_done = (count <= 8'd100)? 1'b0: 1'b1; 
 
     assign uart_wr = uart_en && (!send_done) && uart_knob;
-    // assign uart_wr = uart_en && uart_knob;
 
     //波特率生成器模块
     baudgen u_baudgen(

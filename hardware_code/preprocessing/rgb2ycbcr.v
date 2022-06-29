@@ -19,17 +19,17 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
+//ycbcr阈值化模块,阈值大小可通过按键控制
 module rgb2ycbcr(
     input wire       clk,
     input wire       rst_n,
-    (*mark_debug="true"*)input wire       Int1,
-    (*mark_debug="true"*)input wire       Int2,
-    (*mark_debug="true"*)input wire       Int3,
+    input wire       Int1,
+    input wire       Int2,
+    input wire       Int3,
     input wire[11:0] imgPixel_in,
     
     output wire[11:0] imgPixel_out,
-    (*mark_debug="true"*)output reg[2:0]   choice_led
+    output reg[2:0]   choice_led
     );
 
     wire[7:0] R;
@@ -48,8 +48,8 @@ module rgb2ycbcr(
     reg[7:0] Cr_right_thershold;
     reg[7:0] Cb_left_thershold;
     reg[7:0] Cb_right_thershold;
-    (*mark_debug="true"*)reg[7:0] y_left_thershold;
-    (*mark_debug="true"*)reg[7:0] y_right_thershold;
+    reg[7:0] y_left_thershold;
+    reg[7:0] y_right_thershold;
 
     reg[11:0] erzhihua;
 
@@ -74,12 +74,9 @@ module rgb2ycbcr(
     assign Cr1 = Cr0[15:8];
 
     always @(posedge clk or negedge rst_n) begin
-        // if((Cr1>133) && (Cr1<173) && (Cb1>77) && (Cb1<127)) begin
-        // if((Cr1>=132) && (Cr1<=151) && (Cb1>=87) && (Cb1<=142) && (Y1>=50) && (Y1<=255)) begin
         if(!rst_n) begin
             erzhihua <= 12'h000;
         end
-        // else if((Cr1>136) && (Cr1<173) && (Cb1>77) && (Cb1<127) && (Y1>=50) && (Y1<=255)) begin
         else if((Cr1>Cr_left_thershold) && (Cr1<Cr_right_thershold) && (Cb1>Cb_left_thershold) && (Cb1<Cb_right_thershold) && (Y1>=y_left_thershold) && (Y1<=y_right_thershold)) begin
             erzhihua <= 12'hfff;
         end

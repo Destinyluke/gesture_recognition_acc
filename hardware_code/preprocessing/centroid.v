@@ -19,12 +19,11 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
+//质心检测模块
 module centroid(
     input wire          vga_clk,
     input wire          rst_n,
     input wire[11:0]    img_data,
-    // input wire          vsync_r_pos,
     input wire[9:0]     pixel_x,
     input wire[9:0]     pixel_y,
 
